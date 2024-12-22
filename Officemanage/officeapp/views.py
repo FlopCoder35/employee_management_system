@@ -1,7 +1,9 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from .models import Member,role,department
 from datetime import datetime
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login,logout
 
 # Create your views here.
 
@@ -15,7 +17,7 @@ def all_member(request):
     }
   
    return render(request,'all_member.html',context)
-
+@login_required(login_url='login')
 def add_member(request):
     if request.method=='POST':
         firstname=request.POST['firstname']
@@ -32,6 +34,7 @@ def add_member(request):
           return render(request,'add_member.html')
     else:
         return HttpResponse('An Exception Occured ')
+@login_required(login_url='login')  
 def remove_member(request ,mem_id=0):
     if mem_id:
         try:
@@ -69,3 +72,18 @@ def filter_member(request):
           return render(request,'filter_member.html')
     else:
         return HttpResponse('Error')
+    
+def custom_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect('index')  # Redirect to any page
+        else:
+            return HttpResponse('Invalid credentials or not a superuser')
+    return render(request, 'login.html')
+def custom_logout(request):
+    logout(request)
+    return redirect('login') 
