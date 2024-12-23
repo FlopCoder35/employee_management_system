@@ -1,12 +1,36 @@
 from django.shortcuts import render,HttpResponse,redirect
-from .models import Member,role,department
+from .models import Member,Department,Role
 from datetime import datetime
 from django.db.models import Q
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
-
+from django.conf import settings
 # Create your views here.
 
+def send_message(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+
+        # Validate the data (Optional)
+        if not name or not email or not message:
+            return HttpResponse("All fields are required.", status=400)
+
+        # Send an email or process the data
+        try:
+            send_mail(
+                subject=f"New Message from {name}",
+                message=f"Name: {name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}",
+                from_email=email,  # Replace with your email
+                recipient_list=[settings.EMAIL_HOST_USER],  # Replace with your email
+            )
+            return render(request, "thank_you.html", {"name": name})
+        except Exception as e:
+            return HttpResponse(f"Failed to send message: {str(e)}", status=500)
+    return HttpResponse("Invalid request method.", status=405)
 def index(request):
     return render(request,'index.html')
 
@@ -31,7 +55,14 @@ def add_member(request):
         newmem.save()
         return HttpResponse('Member Added Successfuly ')
     elif request.method=='GET':
-          return render(request,'add_member.html')
+        depts = Department.objects.all()
+        roles = Role.objects.all()
+        context={
+         'depts':depts,
+         'roles':roles
+        }
+        
+        return render(request, 'add_member.html', context)
     else:
         return HttpResponse('An Exception Occured ')
 @login_required(login_url='login')  
@@ -55,21 +86,38 @@ def filter_member(request):
         lastname=request.POST['lastname']
         dept=request.POST['dept']
         role=request.POST['role']
+        salary=request.POST['salary']
         mems=Member.objects.all()
-        if firstname:
-            mems=mems.filter(Q(firstname__icontains=firstname))
-        if lastname:
-            mems=mems.filter(Q(lastname__icontains=lastname))
-        if dept:
-            mems=mems.filter(dept__name__icontains=dept)
-        if role:
-             mems=mems.filter(role__name__icontains=role)
+        depts=Department.objects.all()
+        roles=Role.objects.all()
+        if firstname and firstname != '':
+            mems = mems.filter(firstname=firstname)
+        if lastname and lastname != '':
+            mems = mems.filter(lastname=lastname)
+        if dept and dept != '':
+            mems = mems.filter(dept_id=dept)  # Assuming 'dept' is the ID of the department
+        if role and role != '':
+            mems = mems.filter(role_id=role)  # Assuming 'role' is the ID of the role
+        if salary and salary != '':
+            mems = mems.filter(salary=salary)
+
         context={
-            'mems':mems
+            'mems':mems,
+            'depts':depts,
+            'roles':roles
         }  
         return  render(request,'all_member.html',context)
     elif request.method=='GET':
-          return render(request,'filter_member.html')
+          depts = Department.objects.all()
+          roles = Role.objects.all()
+          mems=Member.objects.all()
+          context={
+           'depts':depts,
+            'roles':roles,
+            'mems':mems
+          }
+        
+          return render(request,'filter_member.html',context)
     else:
         return HttpResponse('Error')
     

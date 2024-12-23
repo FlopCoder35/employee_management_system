@@ -1,0 +1,32 @@
+.env
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# Virtual environment
+venv/
+env/
+
+# Django
+*.log
+*.pot
+.env
+migrations/
+
+# IDE files
+.vscode/
+.idea/
+.project
+.settings/
+
+# Node.js
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

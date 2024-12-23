@@ -21,7 +21,7 @@
       {% for mem in mems %}
       <tbody>
         <tr>
-          <th scope="row">{{mem.id}}</th>
+          <th scope="row">{{ forloop.counter }}</th>
           <td>{{mem.firstname}}</td>
           <td>{{mem.lastname}}</td>
           <td>{{mem.dept.name}}</td>

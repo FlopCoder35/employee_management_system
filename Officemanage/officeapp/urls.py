@@ -12,5 +12,6 @@ urlpatterns = [
     path('filter_member',views.filter_member,name='filter_member'),
     path('login/', views.custom_login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
+    path('send-message/', views.send_message, name='send_message'),
 
 ]
