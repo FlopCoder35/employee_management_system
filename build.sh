@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
-
+.venv\Scripts\activate 
 pip install -r requirements.txt
 
 # Update path to manage.py if it's in a subdirectory
