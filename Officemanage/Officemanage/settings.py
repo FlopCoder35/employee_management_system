@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-3%=_$xl!_i78b68!xxj0wrveoq4y%qqqviaf72d!j(f)h6-*r%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['innosphere-885zbyooz-hiddens-projects-9de69b0f.vercel.app']
+ALLOWED_HOSTS = []
 
 
 
