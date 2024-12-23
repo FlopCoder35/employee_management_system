@@ -4,8 +4,8 @@
 __pycache__/
 *.pyo
 *.pyd
-*.sqlite3
-db.sqlite3
+
+
 
 # Virtual environment
 venv/
@@ -35,7 +35,7 @@ desktop.ini
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
+
 media
 staticfiles
 # Backup files # 
