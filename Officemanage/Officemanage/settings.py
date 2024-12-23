@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,7 +14,8 @@ SECRET_KEY = 'django-insecure-3%=_$xl!_i78b68!xxj0wrveoq4y%qqqviaf72d!j(f)h6-*r%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['innosphere-885zbyooz-hiddens-projects-9de69b0f.vercel.app']
+
 
 
 LOGIN_REDIRECT_URL = '/'  # Redirect to home page after login
@@ -117,6 +119,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
