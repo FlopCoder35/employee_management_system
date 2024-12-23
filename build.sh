@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
 pip install -r requirements.txt
 
-python manage.py collectstatic --no-input
-python manage.py migrate
+# Update path to manage.py if it's in a subdirectory
+python Officemanage/manage.py collectstatic --no-input
+python Officemanage/manage.py migrate
+
 if [[ $CREATE_SUPERUSER ]];
 then
-  python manage.py createsuperuser --no-input --email "$DJANGO_SUPERUSER_EMAIL"
+  python Officemanage/manage.py createsuperuser --no-input --email "$DJANGO_SUPERUSER_EMAIL"
 fi
